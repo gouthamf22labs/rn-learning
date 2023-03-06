@@ -1,5 +1,9 @@
 import * as yup from 'yup';
-export const passwordSchema = {
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter valid email')
+    .required('Email is required'),
   password: yup
     .string()
     .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
@@ -11,4 +15,4 @@ export const passwordSchema = {
     )
     .min(8, ({min}) => `Password must be at least ${min} characters`)
     .required('Password is required'),
-};
+});

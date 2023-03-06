@@ -1,90 +1,92 @@
 import React from 'react';
-import {TouchableWithoutFeedback, View, Text, StyleSheet} from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+
 import {Field, Formik} from 'formik';
 import CustomInput from '../components/CustomInput';
-import CustomCheckbox from '../components/CustomCheckbox';
 import {fonts} from '../utils/fonts';
 import {loginSchema} from '../validationSchemas/loginScreenSchema';
 
-const LoginPage = () => {
+const ProfilePage = () => {
   return (
     <Formik
       initialValues={{
+        fullname: '',
+        nickname: '',
+        dob: '',
         email: '',
-        password: '',
+        phonenumber: '',
+        gender: '',
       }}
       onSubmit={values => console.log(values)}
       validationSchema={loginSchema}>
       {({handleSubmit, isValid}) => (
         <View style={styles.container}>
-          <View style={styles.textContainer}>
-            <Text style={styles.largeTextStyle}>Login to your</Text>
-            <Text style={[styles.largeTextStyle, {marginBottom: 50}]}>
-              Account
-            </Text>
+          <View>
+            <View>
+              <Text style={styles.textStyle}>Fill Your Profile</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textStyle}>Image picker</Text>
           </View>
           <View style={styles.fieldcontainer}>
             <Field
-              name="email"
-              placeholder="Email"
+              name="fullname"
+              placeholder="Full Name"
               keyboardType="email-address"
-              placeholderTextColor="white"
+              placeholderTextColor="#9E9E9E"
               component={CustomInput}
             />
             <Field
-              name="password"
-              placeholder="Password"
+              name="nickname"
+              placeholder="Nickname"
               secureTextEntry
-              placeholderTextColor="white"
+              placeholderTextColor="#9E9E9E"
               component={CustomInput}
             />
-            <View style={{marginTop: 8}}>
-              <Field name="checkbox" component={CustomCheckbox} />
-            </View>
+            <Field
+              name="dob"
+              placeholder="Date of Birth"
+              secureTextEntry
+              placeholderTextColor="#9E9E9E"
+              component={CustomInput}
+            />
+            <Field
+              name="email"
+              placeholder="Email"
+              secureTextEntry
+              placeholderTextColor="#9E9E9E"
+              component={CustomInput}
+            />
+            <Field
+              name="phonenumber"
+              placeholder="Phone Number"
+              secureTextEntry
+              placeholderTextColor="#9E9E9E"
+              component={CustomInput}
+            />
+            <Field
+              name="gender"
+              placeholder="Gender"
+              secureTextEntry
+              placeholderTextColor="#9E9E9E"
+              component={CustomInput}
+            />
+
             <TouchableWithoutFeedback
               onPress={handleSubmit}
               disabled={!isValid}>
               <View style={styles.loginButton}>
-                <Text style={styles.textStyle}>Sign in</Text>
+                <Text style={styles.textStyle}>Continue</Text>
               </View>
             </TouchableWithoutFeedback>
-            <View style={{marginTop: 30}}>
-              <Text style={styles.bottomTextThinGreen}>
-                Forgot the password?
-              </Text>
-            </View>
-          </View>
-          <View style={styles.bottomSizeContainer}>
-            <View style={styles.bottomTextContainer}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                }}>
-                <View style={styles.horizontalLineStyle} />
-              </View>
-              <Text style={styles.bottomText}>or Continue with</Text>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                }}>
-                <View style={styles.horizontalLineStyle} />
-              </View>
-            </View>
-
-            <View style={{width: '100%', alignItems: 'center', marginTop: 60}}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styles.bottomTextThin}>
-                  Don't have an account?
-                </Text>
-                <Text style={styles.bottomTextThinGreen}>Sign up</Text>
-              </View>
-            </View>
           </View>
         </View>
       )}
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1AB65C',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30,
+    borderRadius: 20,
     marginTop: 20,
   },
   bottomSizeContainer: {
@@ -159,4 +161,4 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-export default LoginPage;
+export default ProfilePage;
