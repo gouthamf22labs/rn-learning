@@ -6,7 +6,7 @@ import CustomCheckbox from '../components/CustomCheckbox';
 import {fonts} from '../utils/fonts';
 import {loginSchema} from '../validationSchemas/loginScreenSchema';
 
-const LoginPage = () => {
+const Signup = () => {
   return (
     <Formik
       initialValues={{
@@ -18,7 +18,7 @@ const LoginPage = () => {
       {({handleSubmit, isValid}) => (
         <View style={styles.container}>
           <View style={styles.textContainer}>
-            <Text style={styles.largeTextStyle}>Login to your</Text>
+            <Text style={styles.largeTextStyle}>Create your</Text>
             <Text style={[styles.largeTextStyle, {marginBottom: 50}]}>
               Account
             </Text>
@@ -45,14 +45,9 @@ const LoginPage = () => {
               onPress={handleSubmit}
               disabled={!isValid}>
               <View style={styles.loginButton}>
-                <Text style={styles.textStyle}>Sign in</Text>
+                <Text style={styles.textStyle}>Sign up</Text>
               </View>
             </TouchableWithoutFeedback>
-            <View style={{marginTop: 30}}>
-              <Text style={styles.bottomTextThinGreen}>
-                Forgot the password?
-              </Text>
-            </View>
           </View>
           <View style={styles.bottomSizeContainer}>
             <View style={styles.bottomTextContainer}>
@@ -80,9 +75,9 @@ const LoginPage = () => {
             <View style={{width: '100%', alignItems: 'center', marginTop: 60}}>
               <View style={{flexDirection: 'row'}}>
                 <Text style={styles.bottomTextThin}>
-                  Don't have an account?
+                  Already have an account
                 </Text>
-                <Text style={styles.bottomTextThinGreen}>Sign up</Text>
+                <Text style={styles.bottomTextThinGreen}>Sign in</Text>
               </View>
             </View>
           </View>
@@ -152,6 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.thin,
   },
+
   bottomTextThinGreen: {
     color: '#1AB65C',
     fontSize: 16,
@@ -159,4 +155,4 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-export default LoginPage;
+export default Signup;
