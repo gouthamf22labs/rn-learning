@@ -1,29 +1,40 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, ImageBackground, Alert} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 
-import {fonts} from '../utils/fonts';
-import {
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import {ScrollView} from 'react-native-gesture-handler';
+import CustomButton from '../components/CustomButton';
+import {fonts} from '../utils/fonts';
 const CELL_COUNT = 4;
 
-const OTPPage = () => {
+const OTPPage = ({navigation}: any) => {
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
-
+  let timerRef = useRef(0);
+  const [timer, setTimer] = useState(60);
+  function timerFunction() {
+    timerRef.current = setInterval(() => setTimer(prev => prev - 1), 1000);
+  }
+  useEffect(() => {
+    timerFunction();
+    return () => clearInterval(timerRef.current);
+  }, []);
+  useEffect(() => {
+    if (timer <= 0) {
+      clearInterval(timerRef.current);
+    }
+  });
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.subContainer}>
         <View style={{justifyContent: 'flex-end', flex: 1.5}}>
           <View style={styles.imageContainer}></View>
@@ -33,7 +44,6 @@ const OTPPage = () => {
               Code has been sent to +11 111*******99
             </Text>
           </View>
-
           <CodeField
             ref={ref}
             {...props}
@@ -53,22 +63,32 @@ const OTPPage = () => {
             )}
           />
           <View style={styles.textContainer}>
-            <Text style={[styles.bottomTextThin, {marginTop: 50}]}>
-              Resend code in
-              <Text style={{color: 'green'}}> 53 </Text>
-              <Text>s</Text>
-            </Text>
+            {timer > 0 ? (
+              <Text style={[styles.bottomTextThin, {marginTop: 50}]}>
+                Resend code in
+                <Text style={{color: 'green'}}> {timer}</Text>
+                <Text> s</Text>
+              </Text>
+            ) : (
+              <Text
+                style={[
+                  styles.bottomTextThin,
+                  {marginTop: 50},
+                  {color: 'green'},
+                ]}>
+                Resend the code
+              </Text>
+            )}
           </View>
         </View>
-        <View style={{justifyContent: 'flex-end', flex: 1}}>
-          <TouchableWithoutFeedback>
-            <View style={styles.verifyButtonStyles}>
-              <Text style={styles.textStyle}>Verify</Text>
-            </View>
-          </TouchableWithoutFeedback>
+        <View style={{justifyContent: 'flex-end', flex: 1, marginBottom: 20}}>
+          <CustomButton
+            buttonText="Verify"
+            onPress={() => navigation.navigate('newpasswordpage')}
+          />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({

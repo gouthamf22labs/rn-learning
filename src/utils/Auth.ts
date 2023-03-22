@@ -1,3 +1,3 @@
 export default function auth() {
-  return true;
+  return false;
 }

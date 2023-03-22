@@ -4,13 +4,18 @@ import {StyleSheet} from 'react-native';
 import {fonts} from '../utils/fonts';
 
 const CustomCheckbox = (props: any) => {
+  const {setFieldValue, name, values} = props;
   return (
     <BouncyCheckbox
       size={25}
       fillColor="#1AB65C"
       unfillColor="#182724"
       text="Remember me"
-      textStyle={{textDecorationLine: 'none'}}
+      isChecked={values.checkbox}
+      onPress={() => {
+        setFieldValue(name, values.checkbox === true ? false : true);
+      }}
+      textStyle={{textDecorationLine: 'none', color: 'white'}}
       style={styles.checkBoxStyle}
       innerIconStyle={{
         borderRadius: 10,

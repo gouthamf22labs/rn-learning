@@ -1,43 +1,56 @@
-import React from 'react';
-import {View, Text, StyleSheet, ImageBackground} from 'react-native';
-import {Field} from 'formik';
-import CustomInput from '../components/CustomInput';
-import CustomCheckbox from '../components/CustomCheckbox';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {
+  ScrollView,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import {fonts} from '../utils/fonts';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import CustomButton from '../components/CustomButton';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({navigation}: any) => {
+  const [state, setState] = useState('sms');
   return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <View style={styles.imageContainer}>
-          <Text style={styles.largeTextStyle}>Logo</Text>
-        </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <View style={styles.imageContainer}>
+            <Text style={styles.largeTextStyle}>Logo</Text>
+          </View>
 
-        <Text style={[styles.textStyle, {marginTop: 30}]}>
-          Select which contact details should we use to reset the password
-        </Text>
-        <View style={styles.cardStylesBorderGreen}>
-          <View></View>
-          <View>
-            <Text style={styles.bottomTextThinGrey}>via SMS:</Text>
-            <Text style={styles.bottomTextThin}>+1 111*****09</Text>
-          </View>
+          <Text style={[styles.textStyle, {marginTop: 30}]}>
+            Select which contact details should we use to reset the password
+          </Text>
+          <TouchableWithoutFeedback
+            style={
+              state === 'sms' ? styles.cardStylesBorderGreen : styles.cardStyles
+            }
+            onPress={() => setState('sms')}>
+            <View></View>
+            <View>
+              <Text style={styles.bottomTextThinGrey}>via SMS:</Text>
+              <Text style={styles.bottomTextThin}>+1 111*****09</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            style={
+              state === 'email'
+                ? styles.cardStylesBorderGreen
+                : styles.cardStyles
+            }
+            onPress={() => setState('email')}>
+            <View></View>
+            <View>
+              <Text style={styles.bottomTextThinGrey}>via Email:</Text>
+              <Text style={styles.bottomTextThin}>dan**in@yourdomain.com</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <CustomButton
+            buttonText="Continue"
+            onPress={() => navigation.navigate('otppage')}
+          />
         </View>
-        <View style={styles.cardStyles}>
-          <View></View>
-          <View>
-            <Text style={styles.bottomTextThinGrey}>via Email:</Text>
-            <Text style={styles.bottomTextThin}>dan**in@yourdomain.com</Text>
-          </View>
-        </View>
-        <TouchableWithoutFeedback>
-          <View style={styles.continueButton}>
-            <Text style={styles.textStyle}>Continue</Text>
-          </View>
-        </TouchableWithoutFeedback>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({

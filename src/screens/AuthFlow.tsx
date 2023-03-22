@@ -1,26 +1,27 @@
-import React from 'react';
-import LoginPage from './LoginPage';
-import auth from '../utils/Auth';
 import {createStackNavigator} from '@react-navigation/stack';
-import SignupFlow from './SignupFlow';
+import React from 'react';
 import ForgotPassword from './ForgotPassword';
+import LoginPage from './LoginPage';
+import NewPassword from './NewPassword';
 import OTPPage from './OTPPage';
+import ProfilePage from './ProfilePage';
+import Signup from './Signup';
 
 const AuthStack = createStackNavigator();
 function AuthFlow() {
-  const token = auth();
   return (
     <AuthStack.Navigator
-      initialRouteName="otppage"
-      screenOptions={{
-        headerShown: false,
-      }}>
+      initialRouteName="loginpage"
+      screenOptions={{headerBackTitleVisible: false}}>
       <AuthStack.Screen name="loginpage" component={LoginPage} />
-      <AuthStack.Screen name="signupflow" component={SignupFlow} />
+      <AuthStack.Screen name="profilepage" component={ProfilePage} />
+      <AuthStack.Screen name="signup" component={Signup} />
       <AuthStack.Screen name="forgotflow" component={ForgotPassword} />
       <AuthStack.Screen name="otppage" component={OTPPage} />
+      <AuthStack.Screen name="newpasswordpage" component={NewPassword} />
     </AuthStack.Navigator>
   );
 }
+//navigation.navigate('Profile');
 
 export default AuthFlow;

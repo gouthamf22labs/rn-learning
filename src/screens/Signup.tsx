@@ -1,55 +1,87 @@
+import {Formik} from 'formik';
 import React from 'react';
-import {TouchableWithoutFeedback, View, Text, StyleSheet} from 'react-native';
-import {Field, Formik} from 'formik';
-import CustomInput from '../components/CustomInput';
+import {StyleSheet, Text, View} from 'react-native';
+import CustomButton from '../components/CustomButton';
 import CustomCheckbox from '../components/CustomCheckbox';
+import CustomInput from '../components/CustomInput';
 import {fonts} from '../utils/fonts';
-import {loginSchema} from '../validationSchemas/loginScreenSchema';
+import {signupScreenSchema} from '../validationSchemas/signupScreenSchema';
 
-const Signup = () => {
+const Signup = ({navigation}: any) => {
   return (
     <Formik
       initialValues={{
         email: '',
         password: '',
+        checkbox: false,
       }}
-      onSubmit={values => console.log(values)}
-      validationSchema={loginSchema}>
-      {({handleSubmit, isValid}) => (
+      onSubmit={values => {
+        console.log(values);
+      }}
+      validationSchema={signupScreenSchema}>
+      {({
+        handleSubmit,
+        isValid,
+        handleChange,
+        handleBlur,
+        errors,
+        touched,
+        setFieldValue,
+        setFieldTouched,
+        values,
+      }) => (
         <View style={styles.container}>
-          <View style={styles.textContainer}>
+          <View style={styles.widthContainer}>
             <Text style={styles.largeTextStyle}>Create your</Text>
             <Text style={[styles.largeTextStyle, {marginBottom: 50}]}>
               Account
             </Text>
-          </View>
-          <View style={styles.fieldcontainer}>
-            <Field
-              name="email"
-              placeholder="Email"
-              keyboardType="email-address"
-              placeholderTextColor="white"
-              component={CustomInput}
-            />
-            <Field
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              placeholderTextColor="white"
-              component={CustomInput}
-            />
-            <View style={{marginTop: 8}}>
-              <Field name="checkbox" component={CustomCheckbox} />
+            <View style={styles.fieldcontainer}>
+              <CustomInput
+                name="email"
+                style={styles.textInputStyle}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                placeholder="Email"
+                keyboardType="email-address"
+                placeholderTextColor="white"
+              />
+              {errors['email'] && touched['email'] && (
+                <Text style={styles.errorText}>{errors['email']}</Text>
+              )}
+              <CustomInput
+                style={styles.textInputStyle}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                name="password"
+                placeholder="password"
+                secureTextEntry
+                placeholderTextColor="white"
+              />
+              {errors['password'] && touched['password'] && (
+                <Text style={styles.errorText}>{errors['password']}</Text>
+              )}
+              <CustomCheckbox
+                name="checkbox"
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+                values={values}
+                style={{marginTop: 8}}
+              />
             </View>
-            <TouchableWithoutFeedback
-              onPress={handleSubmit}
-              disabled={!isValid}>
-              <View style={styles.loginButton}>
-                <Text style={styles.textStyle}>Sign up</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-          <View style={styles.bottomSizeContainer}>
+            <CustomButton
+              handleSubmit={handleSubmit}
+              isValid={isValid}
+              buttonText="Sign up"
+            />
+            <Text
+              style={[
+                styles.bottomTextThinGreen,
+                {marginTop: 30, textAlign: 'center'},
+              ]}
+              onPress={() => navigation.navigate('forgotflow')}>
+              Forgot the password?
+            </Text>
             <View style={styles.bottomTextContainer}>
               <View
                 style={{
@@ -71,13 +103,16 @@ const Signup = () => {
                 <View style={styles.horizontalLineStyle} />
               </View>
             </View>
-
-            <View style={{width: '100%', alignItems: 'center', marginTop: 60}}>
+            <View style={{width: '100%', alignItems: 'center', marginTop: 30}}>
               <View style={{flexDirection: 'row'}}>
                 <Text style={styles.bottomTextThin}>
-                  Already have an account
+                  Already have an account?
                 </Text>
-                <Text style={styles.bottomTextThinGreen}>Sign in</Text>
+                <Text
+                  onPress={() => navigation.navigate('loginpage')}
+                  style={styles.bottomTextThinGreen}>
+                  Sign in
+                </Text>
               </View>
             </View>
           </View>
@@ -89,19 +124,40 @@ const Signup = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#181A20',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#181A20',
+  },
+  widthContainer: {
+    flex: 1,
+    padding: 20,
+    width: '100%',
+  },
+  textInputStyle: {
+    height: 50,
+    width: '100%',
+    margin: 10,
+    color: 'white',
+    backgroundColor: '#1F222A',
+    borderColor: '#1F222A',
+    borderWidth: 1.5,
+    borderRadius: 8,
+    paddingLeft: 18,
+    fontFamily: fonts.regular,
   },
   textContainer: {
     width: '100%',
     flexDirection: 'column',
     alignContent: 'flex-start',
   },
+  errorText: {
+    fontSize: 14,
+    color: 'red',
+    textAlign: 'left',
+  },
   largeTextStyle: {
     color: 'white',
     fontSize: 40,
-    marginLeft: 20,
     fontFamily: fonts.extraBold,
   },
   textStyle: {
@@ -110,7 +166,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
   },
   fieldcontainer: {
-    width: '90%',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -123,11 +179,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 20,
   },
-  bottomSizeContainer: {
-    width: '100%',
-  },
+
   bottomTextContainer: {
-    marginTop: 50,
+    marginTop: 30,
     flexDirection: 'row',
   },
   bottomText: {
@@ -147,7 +201,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.thin,
   },
-
   bottomTextThinGreen: {
     color: '#1AB65C',
     fontSize: 16,
