@@ -1,31 +1,18 @@
 import React from 'react';
-import {StyleSheet, TextInput, Text, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {fonts} from '../utils/fonts';
 
 const CustomInput = (props: any) => {
-  const {
-    field: {name, onBlur, onChange, value},
-    form: {errors, touched, setFieldTouched},
-    ...inputProps
-  } = props;
-  const hasError = errors[name] && touched[name];
-
+  const {handleChange, errors, name, values, touched, handleBlur, ...rest} =
+    props;
+  const hasError = errors?.name && touched?.name;
   return (
-    <>
-      <TextInput
-        style={[styles.textInput, hasError && styles.errorInput]}
-        value={value}
-        onChangeText={text => onChange(name)(text)}
-        onBlur={() => {
-          setFieldTouched(name);
-          onBlur(name);
-        }}
-        {...inputProps}
-      />
-      <View style={{width: '100%'}}>
-        {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
-      </View>
-    </>
+    <TextInput
+      style={[styles.textInput, hasError && styles.errorInput]}
+      onChangeText={handleChange(name)}
+      onBlur={handleBlur(name)}
+      {...rest}
+    />
   );
 };
 const styles = StyleSheet.create({
